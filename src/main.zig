@@ -53,6 +53,9 @@ pub fn isprime(p: u32) bool {
         s >>= 1;
 
         if (r & s != 0) {
+            // we can reduce number of branches
+            // is it worth it?
+            // retry after bench add
             // const tV = if ((U + V) & 1 == 0) V else V + p;
             // V = ((D * U + tV) / 2) % p;
             // U = ((U + tV) / 2) % p;
