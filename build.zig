@@ -16,5 +16,5 @@ pub fn build(b: *std.build.Builder) void {
     test_step.dependOn(&main_tests.step);
 
     const bench_step = b.step("bench", "Run benchmark tests");
-    bench_step.dependOn(&main_tests.step);
+    _ = bench_step;
 }
