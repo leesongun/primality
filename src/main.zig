@@ -32,17 +32,26 @@ pub fn isprime(p: u32) bool {
     const r = p + 1;
     var s = @as(u32, 1) << @truncate(u5, (31 - @clz(u32, r)));
 
-    var U: u64 = 0;
-    var V: u64 = 2;
-    var Q: u64 = 1;
+    var U: u64 = 1;
+    var V: u64 = 1;
+    var Q: u64 = q;
 
     const D: u64 = if (d & 2 == 0) d else p - d;
 
     var t: bool = undefined;
-    while (s != 0) {
+    while (s != 1) {
+        if (r & (s - 1) == 0) {
+            if (r & s != 0) {
+                t = (U == 0);
+            }
+            t = t or (V == 0);
+        }
+
         U = (U * V) % p;
         V = (V * V + 2 * (p - Q)) % p;
         Q = (Q * Q) % p;
+
+        s >>= 1;
 
         if (r & s != 0) {
             // const tV = if ((U + V) & 1 == 0) V else V + p;
@@ -56,14 +65,6 @@ pub fn isprime(p: u32) bool {
             }
             Q = (Q * q) % p;
         }
-
-        if (r & (s - 1) == 0 and s != 1) {
-            if (r & s != 0) {
-                t = (U == 0);
-            }
-            t = t or (V == 0);
-        }
-        s >>= 1;
     }
     return t and ((2 * q) % p == V);
 }
