@@ -7,14 +7,13 @@ const jacobi = @import("./jacobi.zig").jacobi;
 const candidates = @import("./constant.zig").candidates;
 
 const half = @import("./utils.zig").half;
-const isoddsquare = @import("./utils.zig").isoddsquare;
+const issquare = @import("./utils.zig").isoddsquare;
 pub fn isprime(p: u32) bool {
     if (p & 1 == 0) return p == 2;
     if (p % 3 == 0) return p == 3; //thankfully, MAX_INTs get sieved here
     if (p % 5 == 0) return p == 5;
-    if (isoddsquare(p)) return false;
+    if (issquare(p)) return false;
 
-    //https://lemire.me/blog/2018/02/21/iterating-over-set-bits-quickly/
     //should try inlined version
     const d = init: {
         var c: u64 = candidates;
@@ -23,7 +22,7 @@ pub fn isprime(p: u32) bool {
             const u = p % t;
             if (u == 0) return p == t;
             if (jacobi(u, t) == 1) break :init t;
-            c ^= (c & -%c);
+            c &= c - 1;
         }
         unreachable;
     };
@@ -67,15 +66,4 @@ pub fn isprime(p: u32) bool {
         }
     }
     return t and ((2 * q) % p == V);
-}
-
-const print = std.debug.print;
-pub fn main() void {
-    var i: u32 = 0;
-    while (i < 100) {
-        if (isprime(i)) {
-            print("{d}\n", .{i});
-        }
-        i += 1;
-    }
 }
