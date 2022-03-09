@@ -12,7 +12,7 @@ pub fn build(b: *std.build.Builder) void {
     const main_tests = b.addTest("src/test.zig");
     main_tests.setBuildMode(mode);
 
-    const comp_tests = b.addTest("src/test.zig");
+    const comp_tests = b.addTest("src/compare.zig");
     comp_tests.setBuildMode(std.builtin.Mode.ReleaseSafe);
 
     const test_step = b.step("test", "Run library tests");
