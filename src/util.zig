@@ -9,7 +9,7 @@ pub fn isoddsquare(a: u32) bool {
     return a == s *% s;
 }
 
-fn isoddsquare_long(a: u64) bool {
+pub fn isoddsquare_long(a: u64) bool {
     if (a & 7 != 1) return false;
     const s = @floatToInt(u64, @sqrt(@intToFloat(f64, a)));
     return a == s *% s;
