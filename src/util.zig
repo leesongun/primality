@@ -15,10 +15,12 @@ fn isoddsquare_long(a: u64) bool {
     return a == s *% s;
 }
 
-//half does not branch
+//operation precedence to prevent overflows
+//does zig guarantte left-to-right addition?
 pub fn half(a: u64, b: u64) u64 {
     assert(b & 1 == 1);
-    return if (a & 1 == 0) (a >> 1) else ((a + b) >> 1);
+    const c = @truncate(u1, a);
+    return b - (b >> c) + (a >> 1);
 }
 
 test "isoddsquare" {

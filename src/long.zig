@@ -7,8 +7,8 @@ const jacobi = @import("./jacobi.zig").jacobi;
 const candidates = @import("./constant.zig").candidates;
 
 const half = @import("./util.zig").half;
-const issquare = @import("./util.zig").isoddsquare;
-pub fn isprime(p: u32) bool {
+const issquare = @import("./util.zig").isoddsquare_long;
+pub fn isprime(p: u64) bool {
     if (p & 1 == 0) return p == 2;
     if (p % 3 == 0) return p == 3; //thankfully, MAX_INTs get sieved here
     if (p % 5 == 0) return p == 5;
@@ -29,11 +29,12 @@ pub fn isprime(p: u32) bool {
 
     const q = if (d & 2 == 0) p - (d >> 2) else (d + 1) / 4;
     const r = p + 1;
-    var s = @as(u32, 1) << @truncate(u5, (31 - @clz(u32, r)));
+    var s = @as(u64, 1) << @truncate(u5, (63 - @clz(u64, r)));
     var t: bool = undefined;
 
     const D: u64 = if (d & 2 == 0) d else p - d;
 
+    //need to make this u128
     var U: u64 = 1;
     var V: u64 = 1;
     var Q: u64 = q;
@@ -46,18 +47,18 @@ pub fn isprime(p: u32) bool {
             t = t or (V == 0);
         }
 
-        U = (U * V) % p;
-        V = (V * V + 2 * (p - Q)) % p;
-        Q = (Q * Q) % p;
+        U = (@as(u128, U) * V) % p;
+        V = (@as(u128, V) * V + 2 * (p - Q)) % p;
+        Q = (@as(u128, Q) * Q) % p;
 
         s >>= 1;
 
         if (r & s != 0) {
-            const tU = half(U + V, p) % p;
-            const tV = half(D * U + V, p) % p;
+            const tU = half((@as(u128, U) + V) % p, p);
+            const tV = half((@as(u128, D) * U + V) % p, p);
             U = tU;
             V = tV;
-            Q = (Q * q) % p;
+            Q = (@as(u128, Q) * q) % p;
         }
     }
     return t and ((2 * q) % p == V) and ((q * q) % p == Q);
