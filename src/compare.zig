@@ -3,7 +3,7 @@ const print = @import("std").debug.print;
 const isp1 = @import("sprp.zig").isprime;
 const isp2 = @import("main.zig").isprime;
 
-pub fn main() void {
+test "compare results" {
     var i: u32 = 0;
     while (true) {
         var a = isp1(i);
@@ -11,8 +11,8 @@ pub fn main() void {
         if (a != b) {
             print("{d}sprp:{}\tvprp:{}\t\n", .{ i, a, b });
         }
-        // if (i & 0xFFFF == 0xFFFF)
-        //     print("done {h} {}\n", .{i, true});
+        if (i & 0x00FF_FFFF == 0x00FF_FFFF)
+            print("done {X}\n", .{i});
         i += 1;
         if (i == 0) break;
     }
