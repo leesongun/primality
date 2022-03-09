@@ -60,5 +60,5 @@ pub fn isprime(p: u32) bool {
             Q = (Q * q) % p;
         }
     }
-    return t and ((2 * q) % p == V);
+    return ((2 * q) % p == V);
 }
