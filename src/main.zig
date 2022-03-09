@@ -6,8 +6,8 @@ const expectEq = std.testing.expectEqual;
 const jacobi = @import("./jacobi.zig").jacobi;
 const candidates = @import("./constant.zig").candidates;
 
-const half = @import("./utils.zig").half;
-const issquare = @import("./utils.zig").isoddsquare;
+const half = @import("./util.zig").half;
+const issquare = @import("./util.zig").isoddsquare;
 pub fn isprime(p: u32) bool {
     if (p & 1 == 0) return p == 2;
     if (p % 3 == 0) return p == 3; //thankfully, MAX_INTs get sieved here
@@ -30,14 +30,14 @@ pub fn isprime(p: u32) bool {
     const q = if (d & 2 == 0) p - (d >> 2) else (d + 1) / 4;
     const r = p + 1;
     var s = @as(u32, 1) << @truncate(u5, (31 - @clz(u32, r)));
+    var t: bool = undefined;
+
+    const D: u64 = if (d & 2 == 0) d else p - d;
 
     var U: u64 = 1;
     var V: u64 = 1;
     var Q: u64 = q;
 
-    const D: u64 = if (d & 2 == 0) d else p - d;
-
-    var t: bool = undefined;
     while (s != 1) {
         if (r & (s - 1) == 0) {
             if (r & s != 0) {
@@ -53,18 +53,10 @@ pub fn isprime(p: u32) bool {
         s >>= 1;
 
         if (r & s != 0) {
-            // we can reduce number of branches
-            // is it worth it?
-            // retry after bench add
-            // const tV = if ((U + V) & 1 == 0) V else V + p;
-            // V = ((D * U + tV) / 2) % p;
-            // U = ((U + tV) / 2) % p;
-            {
-                const tU = half(U + V, p) % p;
-                const tV = half(D * U + V, p) % p;
-                U = tU;
-                V = tV;
-            }
+            const tU = half(U + V, p) % p;
+            const tV = half(D * U + V, p) % p;
+            U = tU;
+            V = tV;
             Q = (Q * q) % p;
         }
     }

@@ -16,8 +16,6 @@ fn isoddsquare_long(a: u64) bool {
 }
 
 //half does not branch
-//idk how
-//compiler magic
 pub fn half(a: u64, b: u64) u64 {
     assert(b & 1 == 1);
     return if (a & 1 == 0) (a >> 1) else ((a + b) >> 1);
