@@ -32,7 +32,7 @@ pub fn sprp2(a: u64, p: u64) bool {
     }
     if (b == 1) return true;
     while (b + 1 != p) {
-        if (s == 2) return false;
+        if (s <= 2) return false;
         b = mulmod(b, b, p);
         s >>= 1;
     }
