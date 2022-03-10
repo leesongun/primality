@@ -12,7 +12,7 @@ fn hd(a: u128, b: u64) u64 {
     return half(div(a, b), b);
 }
 
-pub fn vprp(p: u64, d:u64) bool {
+pub fn vprp(p: u64, d: u64) bool {
     const q = if (d & 2 == 0) p - (d >> 2) else (d + 1) / 4;
     const r = p + 1;
     var s = high(r);

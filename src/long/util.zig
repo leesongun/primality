@@ -17,8 +17,8 @@ pub fn half(a: u64, b: u64) u64 {
     return b - (b >> c) + (a >> 1);
 }
 
-pub fn highbit(a:u64) u64 {
-    return 1 << ~@intCast(u6,@clz(u64, a));
+pub fn highbit(a: u64) u64 {
+    return 1 << ~@intCast(u6, @clz(u64, a));
 }
 
 test "isoddsquare" {
