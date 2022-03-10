@@ -1,9 +1,8 @@
 // p >= 2 i guess?
-pub fn sprp(a: u64, p: u32) bool {
+pub fn sprp(a: u32, p: u32) bool {
     const r = p - 1;
     var s = @as(u32, 1) << @truncate(u5, (31 - @clz(u32, r)));
     var b: u64 = a % p;
-    var c: u64 = a % p;
 
     if (b == 0) return true;
 
@@ -17,13 +16,13 @@ pub fn sprp(a: u64, p: u32) bool {
         s >>= 1;
 
         if (r & s != 0) {
-            b = (b * c) % p;
+            b = (b * a) % p;
         }
     }
 }
 
 pub fn isprime(p: u32) bool {
-    const arr = [_]u64{ 4230279247111683200, 14694767155120705706, 16641139526367750375 };
+    const arr = [_]u32{ 2, 7, 61 };
     if (p < 2) return false;
     return sprp(arr[0], p) and sprp(arr[1], p) and sprp(arr[2], p);
 }
