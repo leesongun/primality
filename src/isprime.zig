@@ -17,7 +17,8 @@ pub fn isprime_u64(p: u64) bool {
 }
 
 const div = @import("inline.zig").div;
-const vprp = @import("vprp.zig").vprp2;
+const vprp2 = @import("vprp.zig").vprp2;
+const vprp3 = @import("vprp.zig").vprp3;
 
 const jacobi = @import("jacobi.zig").jacobi;
 const issquare = @import("util.zig").isoddsquare;
@@ -40,5 +41,5 @@ pub fn isprime_vprp(p: u64) bool {
         }
         unreachable;
     };
-    return vprp(p, d);
+    return if (p & 2 == 0) vprp3(p, d) else vprp2(p, d);
 }
