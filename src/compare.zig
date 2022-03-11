@@ -1,7 +1,8 @@
 const print = @import("std").debug.print;
+const isp = @import("isprime.zig");
 
-const isp1 = @import("long/comp.zig").isprime_u32;
-const isp2 = @import("sprp.zig").isprime;
+const isp1 = isp.isprime_u32;
+const isp2 = isp.isprime_vprp;
 
 test "compare results" {
     var i: u32 = 0;

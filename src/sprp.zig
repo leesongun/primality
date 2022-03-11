@@ -1,39 +1,40 @@
-// p >= 2 i guess?
-pub fn sprp(a: u32, p: u32) bool {
+const high = @import("./util.zig").highbit;
+const div = @import("./inline.zig").div;
+
+fn mulmod(a: u64, b: u64, m: u64) u64 {
+    return div(@as(u128, a) * b, m);
+}
+
+pub fn sprp(a: u64, p: u64) bool {
     const r = p - 1;
-    var s = @as(u32, 1) << @truncate(u5, (31 - @clz(u32, r)));
+    var s = high(r);
     var b: u64 = a % p;
-
     if (b == 0) return true;
-
-    while (true) {
-        if ((r & (s - 1) == 0) and ((r & s != 0 and b == 1) or (b + 1 == p))) {
-            return true;
-        }
+    while ((r & (s - 1) != 0) or ((r & s == 0 or b != 1) and (b + 1 != p))) {
         if (s == 2) return false;
-
-        b = (b * b) % p;
         s >>= 1;
-
-        if (r & s != 0) {
-            b = (b * a) % p;
-        }
+        b = mulmod(b, b, p);
+        if (r & s != 0) b = mulmod(b, a, p);
     }
+    return true;
 }
 
-pub fn isprime(p: u32) bool {
-    const arr = [_]u32{ 2, 7, 61 };
-    if (p < 2) return false;
-    return sprp(arr[0], p) and sprp(arr[1], p) and sprp(arr[2], p);
-}
-
-const print = @import("std").debug.print;
-pub fn main() void {
-    var i: u32 = 0;
-    while (i < 100) {
-        if (isprime(i)) {
-            print("{d}\n", .{i});
-        }
-        i += 1;
+//works only for odd numbers
+pub fn sprp2(a: u64, p: u64) bool {
+    const r = p - 1;
+    var s = high(r);
+    var b: u64 = a % p;
+    if (b == 0) return true;
+    while (r & (s - 1) != 0) {
+        b = mulmod(b, b, p);
+        s >>= 1;
+        if (r & s != 0) b = mulmod(b, a, p);
     }
+    if (b == 1) return true;
+    while (b + 1 != p) {
+        if (s <= 2) return false;
+        b = mulmod(b, b, p);
+        s >>= 1;
+    }
+    return true;
 }
