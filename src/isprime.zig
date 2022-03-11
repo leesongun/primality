@@ -17,7 +17,7 @@ pub fn isprime_u64(p: u64) bool {
 }
 
 const div = @import("inline.zig").div;
-const vprp = @import("vprp.zig").vprp;
+const vprp = @import("vprp.zig").vprp2;
 
 const jacobi = @import("jacobi.zig").jacobi;
 const issquare = @import("util.zig").isoddsquare;

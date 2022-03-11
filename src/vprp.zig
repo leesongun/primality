@@ -76,14 +76,19 @@ pub fn vprp2(p: u64, d: u64) bool {
             Q = div(@as(u128, Q) * q, p);
         }
     }
-    if (U == 0) return half(div(@as(u128, V) * V)) == Q;
-    while (s != 1) {
-        if (V == 0) return true;
-        V = div(@as(u128, V) * V + @as(u128, 2) * (p - Q), p);
+    outer: {
+        if (U == 0) break :outer; //should use sprp in this case, which is stronger
+        while (s != 2) {
+            if (V == 0) break :outer;
+            V = div(@as(u128, V) * V + @as(u128, 2) * (p - Q), p);
+            Q = div(@as(u128, Q) * Q, p);
+            s >>= 1;
+        }
+        return (V == 0 and (Q + q == p));
+    }
+    while (s != 2) {
         Q = div(@as(u128, Q) * Q, p);
-
         s >>= 1;
     }
-    return false;
-    //now additionally check sprp(Q)
+    return Q == q;
 }
