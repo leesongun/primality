@@ -21,7 +21,7 @@ fn div2(a: u128, b: u64) u64 {
 test "div test" {
     var b: u64 = 0x502D_A253_4C96_99FD;
     var a: u128 = 0x502D_A253_4C96_99FD_DF99_69C4_352A; //_D205;
-    while (true) {
+    while (a < 0x502D_A253_4C96_99FD_DF99_69C4_FFFF) {
         try expectEq(div2(a, b), div(a, b));
         a += 1;
     }

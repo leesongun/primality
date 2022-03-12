@@ -50,6 +50,12 @@ pub fn vprp(p: u64, d: u64) bool {
     return t and ((2 * q) % p == V) and ((q * q) % p == Q);
 }
 
+//how about using x^2+x+(p+5)/4 when 4k+3?
+//also try using x^+x+(p-1)/2 for D=3 
+//q=p>>1 (actually correspond to 3, making jacobi calculation a bit )
+//x^2+x+(p+3)/2 for D=5
+//q=(p>>1)+2 (actually correspond to -5, making jacobi calculation )
+//dont try x^2+x+(1/2) because it is equivalent or weaker than sprp(2)
 pub fn vprp2(p: u64, d: u64) bool {
     const q = if (d & 2 == 0) p - (d >> 2) else (d + 1) / 4;
     const r = p + 1;
@@ -77,7 +83,7 @@ pub fn vprp2(p: u64, d: u64) bool {
         }
     }
     outer: {
-        if (U == 0) break :outer; //should use sprp in this case, which is stronger
+        if (U == 0) break :outer;
         while (s != 2) {
             if (V == 0) break :outer;
             V = div(@as(u128, V) * V + @as(u128, 2) * (p - Q), p);
@@ -93,7 +99,7 @@ pub fn vprp2(p: u64, d: u64) bool {
     return Q == q;
 }
 
-//for 4k+1-type numbers
+//for 4k+1 numbers
 pub fn vprp3(p: u64, d: u64) bool {
     const q = if (d & 2 == 0) p - (d >> 2) else (d + 1) / 4;
     const r = p - 1;
@@ -129,13 +135,8 @@ pub fn vprp3(p: u64, d: u64) bool {
         Q = div(@as(u128, Q) * Q, p);
         s >>= 1;
     }
-    {
-        const tU = @as(u128, U);
-        const tV = V;
-        U = hd(tU + tV, p);
-        V = hd(D * tU + tV, p);
-    }
-    if (t) return (U == 0); //U+V==p?
-    if (Q == p - 1) return (V == 0); //
+    if (t) return (U == p - V);
+    if (Q == p - 1)
+        return div(D * @as(u128, U), p) == p - V;
     return false;
 }
