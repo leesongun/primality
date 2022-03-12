@@ -16,10 +16,7 @@ pub fn isprime_u64(p: u64) bool {
     return sprp(arr[0], p) and sprp(arr[1], p) and sprp(arr[2], p);
 }
 
-const div = @import("inline.zig").div;
-const vprp2 = @import("vprp.zig").vprp2;
-const vprp3 = @import("vprp.zig").vprp3;
-const vprp4 = @import("vprp.zig").vprp4;
+const vprp = @import("vprp.zig").vprp;
 
 const jacobi = @import("jacobi.zig").jacobi;
 const issquare = @import("util.zig").isoddsquare;
@@ -41,6 +38,7 @@ pub fn isprime_vprp(p: u64) bool {
             c &= c - 1;
         }
         unreachable;
+        //@panic("need longer list");
     };
-    return vprp4(p, d);
+    return vprp(p, d);
 }
