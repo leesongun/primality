@@ -5,10 +5,10 @@ const half = @import("./util.zig").half;
 const high = @import("./util.zig").highbit;
 const div = @import("./inline.zig").div;
 
-//halfdiv
-fn hd(a: u128, b: u64) u64 {
+fn halfdiv(a: u128, b: u64) u64 {
     return half(div(a, b), b);
 }
+
 inline fn double(U: *u64, V: *u64, Q: *u64, s: *u64, p: u64, comptime m: comptime_int) void {
     if (m == 2) U.* = div(@as(u128, U.*) * V.*, p);
     if (m != 0) V.* = div(@as(u128, V.*) * V.* + @as(u128, 2) * (p - Q.*), p);
@@ -30,8 +30,8 @@ pub fn vprp(p: u64, d: u64) bool {
         if (r & s != 0) {
             const tU = @as(u128, U);
             const tV = V;
-            U = hd(tU + tV, p);
-            V = hd(D * tU + tV, p);
+            U = halfdiv(tU + tV, p);
+            V = halfdiv(D * tU + tV, p);
             Q = div(@as(u128, Q) * q, p);
         }
     }
