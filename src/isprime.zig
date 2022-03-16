@@ -40,8 +40,8 @@ pub fn isprime_vprp(p: u64) bool {
             if (jacobi(u, t) == 1) break :init t;
             c &= c - 1;
         }
-        unreachable;
-        //@panic("need longer list");
+        // unreachable;
+        @panic("need longer list");
     };
     return vprp(p, d);
 }
