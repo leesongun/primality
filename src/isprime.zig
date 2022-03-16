@@ -13,7 +13,10 @@ pub fn isprime_u64(p: u64) bool {
     //safe because we test 2
     //if (p & 1 == 0) return p == 2;
     if (p <= 1) return false;
-    return sprp(arr[0], p) and sprp(arr[1], p) and sprp(arr[2], p);
+    inline for (arr) |i| {
+        if (!sprp(i, p)) return false;
+    }
+    return true;
 }
 
 const vprp = @import("vprp.zig").vprp;
