@@ -23,7 +23,7 @@ pub fn jacobi(a: u64, b: u64) u1 {
     assert(a != 0 or b == 1);
 
     if (a < 2) return 0;
-    const c = a >> @intCast(u6,@ctz(u64, a));
+    const c = a >> @intCast(u6, @ctz(u64, a));
     const e = @truncate(u1, @ctz(u64, a)) * @truncate(u1, @popCount(u64, b & 6));
     const f = @truncate(u1, c >> 1) * @truncate(u1, b >> 1);
     return jacobi(b % c, c) ^ e ^ f;

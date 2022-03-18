@@ -18,5 +18,5 @@ test "compare results" {
             print("done {X}\n", .{i});
         i += 1;
     }
-    @import("std").testing.expectEqual(0, count);
+    try @import("std").testing.expectEqual(@as(u64, 0), count);
 }
