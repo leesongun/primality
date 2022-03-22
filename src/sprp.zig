@@ -31,10 +31,9 @@ pub fn sprp2(a: u64, p: u64) bool {
         if (r & s != 0) mulmod(&b, a, p);
     }
     if (b == 1) return true;
-    while (b + 1 != p) {
+    while (b + 1 != p) : (s >>= 1) {
         if (s <= 2) return false;
         mulmod(&b, b, p);
-        s >>= 1;
     }
     return true;
 }

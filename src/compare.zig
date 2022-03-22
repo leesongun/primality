@@ -7,7 +7,7 @@ const isp2 = isp.isprime_vprp;
 test "compare results" {
     var i: u64 = 0;
     var count: u64 = 0;
-    while (i < 0xFFFF_FFFF) {
+    while (i < 0xFFFF_FFFF) : (i += 1) {
         var a = isp1(i);
         var b = isp2(i);
         if (a != b) {
@@ -16,7 +16,6 @@ test "compare results" {
         }
         if (i & 0x00FF_FFFF == 0x00FF_FFFF)
             print("done {X}\n", .{i});
-        i += 1;
     }
     try @import("std").testing.expectEqual(@as(u64, 0), count);
 }

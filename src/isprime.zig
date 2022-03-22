@@ -13,9 +13,8 @@ pub fn isprime_u64(p: u64) bool {
     //safe because we test 2
     //if (p & 1 == 0) return p == 2;
     if (p <= 1) return false;
-    inline for (arr) |i| {
+    inline for (arr) |i|
         if (!sprp(i, p)) return false;
-    }
     return true;
 }
 
@@ -25,20 +24,18 @@ const jacobi = @import("jacobi.zig").jacobi;
 const issquare = @import("util.zig").isoddsquare;
 const candidates = @import("constant.zig").candidates;
 pub fn isprime_vprp(p: u64) bool {
-    if (p & 1 == 0) return p == 2;
-    if (p % 3 == 0) return p == 3; //thankfully, MAX_INTs get sieved here
-    if (p % 5 == 0) return p == 5;
+    if (p & 1 == 0 or p % 3 == 0 or p % 5 == 0)
+        return p == 2 or p == 3 or p == 5; //thankfully, MAX_INTs get sieved here
     if (issquare(p)) return false;
 
     //should try inlined version
     const d = init: {
         var c: u64 = candidates;
-        while (c != 0) {
+        while (c != 0) : (c &= c - 1) {
             const t = 2 * @as(u64, @ctz(u64, c)) + 7;
             const u = p % t;
             if (u == 0) return p == t;
             if (jacobi(u, t) == 1) break :init t;
-            c &= c - 1;
         }
         // unreachable;
         @panic("need longer list");

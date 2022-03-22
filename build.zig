@@ -16,8 +16,14 @@ pub fn build(b: *std.build.Builder) void {
     test_step.dependOn(&main_tests.step);
 
     const comp_tests = b.addTest("src/compare.zig");
-    comp_tests.setBuildMode(std.builtin.Mode.ReleaseSafe);
+    comp_tests.setBuildMode(std.builtin.Mode.ReleaseFast);
 
     const bench_step = b.step("bench", "Run benchmark tests");
     bench_step.dependOn(&comp_tests.step);
+
+    const comp_debug = b.addTest("src/compare.zig");
+    comp_tests.setBuildMode(std.builtin.Mode.Debug);
+
+    const debug_step = b.step("debug", "Run benchmark tests");
+    debug_step.dependOn(&comp_debug.step);
 }

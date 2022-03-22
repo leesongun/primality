@@ -35,9 +35,8 @@ test "multiplicativity" {
 
 test "known values" {
     var i: u64 = 3;
-    while (i < 0x1000) {
+    while (i < 0x1000) : (i += 2) {
         try expectEq(@truncate(u1, i >> 1), jacobi(i - 1, i));
         try expectEq(@truncate(u1, @popCount(u64, i & 6)), jacobi(2, i));
-        i += 2;
     }
 }

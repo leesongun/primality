@@ -23,14 +23,9 @@ pub fn highbit(a: u64) u64 {
 
 test "isoddsquare" {
     var i: u64 = 1;
-    while (i < (1 << 32)) {
+    while (i < (1 << 32)) : (i += 2)
         try expect(isoddsquare(i * i));
-        i += 2;
-    }
-
     i = 0;
-    while (i < (1 << 32)) {
+    while (i < (1 << 32)) : (i += 2)
         try expect(!isoddsquare(i * i));
-        i += 2;
-    }
 }
