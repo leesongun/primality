@@ -14,10 +14,9 @@ pub const candidates = init: {
 
 test {
     var c = candidates;
-    var i: usize = 0;
-    while (c != 0) : (i += 1) {
-        const t = 2 * @as(u8, @ctz(u64, c)) + 7;
-        try (expectEq(list[i], t));
+    for (list) |v| {
+        try expectEq(v, 2 * @as(u8, @ctz(u64, c)) + 7);
         c &= c - 1;
     }
+    try expectEq(c, 0);
 }
