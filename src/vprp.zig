@@ -37,14 +37,8 @@ pub fn vprp(p: u64, d: u64) bool {
     }
     if (p & 2 == 0) {
         var t = (Q == 1);
-        while (s != 2) : (double(&U, &V, &Q, &s, p, 2))
-            if (Q == p - 1) t = true;
-        if (t) return U == p - V;
-        if (Q == p - 1) return div(D * @as(u128, U), p) == p - V;
-        return false;
-    } else if (U != 0) while (s != 2) : (double(&U, &V, &Q, &s, p, 1)) {
-        if (V == 0) break;
-    } else return V == 0 and Q + q == p;
-    while (s != 2) double(&U, &V, &Q, &s, p, 0);
-    return Q == q;
+        while (s != 2) : (double(&U, &V, &Q, &s, p, 2)) if (Q == p - 1) t = true;
+        return t and U == p - V or Q == p - 1 and div(D * @as(u128, U), p) == p - V;
+    } else if (U != 0) while (s != 2) if (V == 0) break else double(&U, &V, &Q, &s, p, 1) else return V == 0 and Q + q == p;
+    while (s != 2) double(&U, &V, &Q, &s, p, 0) else return Q == q;
 }
